@@ -80,7 +80,19 @@ async function runCommand(message)
                 switch(commandString)
                 {
                     case "scanserv":
-                        commandToRun.execute();
+                        let serverJSON = await commandToRun.execute(message.guild);
+                        message.channel.send(JSON.stringify(serverJSON));
+                        serverArray.push(serverJSON);
+                        break;
+                    case "saveserv":
+                        commandToRun.execute(serverArray, fs);
+                        break;
+                    case "loadserv":
+                        serverArray = [];
+                        serverArray = commandToRun.execute(serverArray, fs);
+                        break;
+                    case "scanchan":
+                        commandToRun.execute(message.channel);
                         break;
                 }
 
@@ -104,7 +116,7 @@ async function runCommand(message)
     catch (err)
     {
         message.channel.send("An error has occured while trying to run the command!");
-        console.error(error);
+        console.error(err);
     }
     
 }
