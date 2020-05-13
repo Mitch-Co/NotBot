@@ -1,0 +1,3 @@
+#Bot config and server files
+assets/servers/*.json
+assets/config.json
