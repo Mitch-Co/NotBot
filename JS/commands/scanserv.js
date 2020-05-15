@@ -3,7 +3,7 @@ module.exports = {
     description: 'Scans all messages in a server',
     isAdmin: true,
     hidden: false,
-	async execute(guild) {
+	async execute(commandMSG, guild) {
 
         let serverJSON = {};
         let channelsJSON = [];
@@ -12,37 +12,66 @@ module.exports = {
 
         let channelsObj = [];
 
+        // I think await might be nessisary here? 
         guild.channels.cache.forEach(channel => {
             channelsObj.push(channel);
         });
-
-        for (const channel of channelsObj)
+        try
         {
-            if(channel.type === "text")
+            for (const channel of channelsObj)
             {
-                let messagesObj = [];
-                let channelJSON = {};
-                let messagesJSON = [];
-
-                messagesObj = await grabMessagesFromChan(channel);
-
-                for (message of messagesObj)
+                if(channel.type === "text")
                 {
-                    let messageJSON = {};
-                    messageJSON.text = message.toString();
-                    messagesJSON.push(messageJSON);
+                    let messagesObj = [];
+                    let channelJSON = {};
+                    let messagesJSON = [];
+                    commandMSG.channel.send("SCANNING " + channel.toString());
+                    messagesObj = await grabMessagesFromChan(channel);
+                    for (const message of messagesObj)
+                    {
+                        let messageJSON = {};
+                        messageJSON.text = message.content;
+                        messageJSON.author = message.author.id.toString();
+                        messageJSON.date = message.createdAt;
+                        let reactionsJSON = [];
+    
+                        message.reactions.cache.forEach(reactionOrig => {
+                            
+                            let reactionJSON = {};
+                            reactionOrig.fetch()
+                                .then((reaction) => {
+                                    reactionJSON.name = reaction.emoji.toString();
+                                    reactionJSON.authors = [];
+            
+                                    reaction.users.cache.forEach(user => {
+                                        let reactUserJSON = {};
+                                        reactUserJSON.id = user.id.toString();
+                                        reactionJSON.authors.push(reactUserJSON);
+                                    });
+                                });
+                            reactionsJSON.push(reactionJSON);
+                        });
+                        messageJSON.reactions = reactionsJSON;
+                        messagesJSON.push(messageJSON);
+                    }
+    
+                    channelJSON.id = channel.id.toString();
+                    channelJSON.messages = messagesJSON;
+                    channelsJSON.push(channelJSON);
                 }
-
-                channelJSON.name = channel.toString();
-                channelJSON.messages = messagesJSON;
-                channelsJSON.push(channelJSON);
-                break;
             }
+    
+            serverJSON.channels = channelsJSON;
+
+            commandMSG.channel.send("Scan Complete!");
+            return serverJSON;
         }
-
-        serverJSON.channels = channelsJSON;
-
-        return serverJSON;
+        catch (error)
+        {
+            console.log(error);
+            commandMSG.channel.send("AN ERROR HAS OCCURED WHILE SCANNING!");
+            return;
+        }
 
 	},
 };
@@ -73,7 +102,6 @@ async function grabMessagesFromChan(channel)
                 limit:100,
             }
         }
-
         await manager.fetch(options)
         .then(messages => {
             let msgArray = messages.array();
@@ -83,10 +111,10 @@ async function grabMessagesFromChan(channel)
             }
             else
             {
-                for (message of messages)
-                {
+                messages.each((message)=> {                    
                     toReturn.push(message);
-                }
+                });
+
                 if(lastID == msgArray[msgArray.length - 1].id.toString())
                 {
                     breakflag = true;
@@ -97,6 +125,7 @@ async function grabMessagesFromChan(channel)
         })
         .catch((err) => {
             breakflag = true;
+            console.log(err);
         });
 
         if(breakflag === true)

@@ -1,6 +1,5 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const FileMan = require('./FileMan.js');
 
 // Bot token and info loaded
 const {botPrefix, token, botMaster} = require("../assets/config.json");
@@ -16,13 +15,11 @@ for (const file of commandFiles)
 	client.commands.set(command.name, command);
 }
 
-//Create a new File Manager
-let manager = new FileMan(fs);
-
 //Create places to manage server data
 let serverArray = [];
 let miniServerArray = [];
 
+let ioLock = false;
 // Enable next line if performance time is required
 //const {PerformanceObserver, performance} = require('perf_hooks');
 
@@ -80,19 +77,40 @@ async function runCommand(message)
                 switch(commandString)
                 {
                     case "scanserv":
-                        let serverJSON = await commandToRun.execute(message.guild);
-                        message.channel.send(JSON.stringify(serverJSON));
+                        if(ioLock === true)
+                        {
+                            message.channel.send("IO OPERATION PENDING: PLEASE WAIT!");
+                            break;
+                        }
+                        ioLock = true;
+                        let serverJSON = await commandToRun.execute(message, message.guild);
                         serverArray.push(serverJSON);
+                        ioLock = false;
                         break;
                     case "saveserv":
+                        if(ioLock === true)
+                        {
+                            message.channel.send("IO OPERATION PENDING: PLEASE WAIT!");
+                            break;
+                        }
+                        ioLock = true;
+
                         commandToRun.execute(serverArray, fs);
+
+                        ioLock = false;
                         break;
                     case "loadserv":
+                        if(ioLock === true)
+                        {
+                            message.channel.send("IO OPERATION PENDING: PLEASE WAIT!");
+                            break;
+                        }
+                        ioLock = true;
+                        
                         serverArray = [];
                         serverArray = commandToRun.execute(serverArray, fs);
-                        break;
-                    case "scanchan":
-                        commandToRun.execute(message.channel);
+
+                        ioLock = false;
                         break;
                 }
 
