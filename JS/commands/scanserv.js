@@ -12,7 +12,6 @@ module.exports = {
 
         let channelsObj = [];
 
-        // I think await might be nessisary here? 
         guild.channels.cache.forEach(channel => {
             channelsObj.push(channel);
         });
@@ -25,7 +24,6 @@ module.exports = {
                     let messagesObj = [];
                     let channelJSON = {};
                     let messagesJSON = [];
-                    commandMSG.channel.send("SCANNING " + channel.toString());
                     messagesObj = await grabMessagesFromChan(channel);
                     for (const message of messagesObj)
                     {
@@ -35,15 +33,14 @@ module.exports = {
                         messageJSON.date = message.createdAt;
                         let reactionsJSON = [];
     
-                        message.reactions.cache.forEach(reactionOrig => {
+                        message.reactions.cache.forEach(reaction => {
                             
                             let reactionJSON = {};
-                            reactionOrig.fetch()
-                                .then((reaction) => {
-                                    reactionJSON.name = reaction.emoji.toString();
-                                    reactionJSON.authors = [];
-            
-                                    reaction.users.cache.forEach(user => {
+                            reactionJSON.name = reaction.emoji.toString();
+                            reactionJSON.authors = [];
+                            reaction.users.fetch()
+                                .then((userList) => {
+                                    userList.forEach(user => {
                                         let reactUserJSON = {};
                                         reactUserJSON.id = user.id.toString();
                                         reactionJSON.authors.push(reactUserJSON);
@@ -111,7 +108,7 @@ async function grabMessagesFromChan(channel)
             }
             else
             {
-                messages.each((message)=> {                    
+                messages.forEach((message)=> {                    
                     toReturn.push(message);
                 });
 
