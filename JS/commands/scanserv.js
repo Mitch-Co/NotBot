@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'scanserv',
     description: 'Scans all messages in a server',
+    args: "No arguments",
     isAdmin: true,
     hidden: false,
 	async execute(commandMSG, guild) {
@@ -9,7 +10,7 @@ module.exports = {
         let channelsJSON = [];
 
         serverJSON.id = guild.id.toString();
-
+        serverJSON.date = Date.now().toString();
         let channelsObj = [];
 
         guild.channels.cache.forEach(channel => {
@@ -24,6 +25,7 @@ module.exports = {
                     let messagesObj = [];
                     let channelJSON = {};
                     let messagesJSON = [];
+                    commandMSG.channel.send("SCANNING " + channel.toString());
                     messagesObj = await grabMessagesFromChan(channel);
                     for (const message of messagesObj)
                     {

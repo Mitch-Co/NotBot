@@ -1,9 +1,10 @@
 module.exports = {
 	name: 'loadserv',
     description: 'Loads all messages from server files',
+    args: "No arguments",
     isAdmin: true,
     hidden: false,
-	execute(serverListJSON, fs) {
+	execute(fs) {
         let filePath = "../assets/servers/";
         let toReturnJSON = [];
 

@@ -17,7 +17,7 @@ for (const file of commandFiles)
 
 //Create places to manage server data
 let serverArray = [];
-let miniServerArray = [];
+let cashe = [];
 
 let ioLock = false;
 // Enable next line if performance time is required
@@ -25,8 +25,18 @@ let ioLock = false;
 
 client.login(token);
 
-client.on("ready", () => {
+client.on("ready", async () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    
+    ioLock = true;   
+    serverArray = [];
+    serverArray = await client.commands.get("loadserv").execute(fs);
+    
+    // Initialize cashe array for quick response times after first load
+    resetCashe();
+    ioLock = false;
+
+    console.log("Server files loaded. All systems operational.");
   });
 
 client.on("message", message => {
@@ -62,7 +72,7 @@ async function runCommand(message)
     
     if(commandToRun == null)
     {
-        message.channel.send("This command is not valid, to list valid commands, use " + botPrefix + "help ");
+        message.channel.send("This command is not valid, to list valid commands, use `" + botPrefix + "help`.");
         return;
     }
 
@@ -95,7 +105,7 @@ async function runCommand(message)
                         }
                         ioLock = true;
 
-                        commandToRun.execute(serverArray, fs);
+                        commandToRun.execute(message, serverArray, fs);
 
                         ioLock = false;
                         break;
@@ -108,7 +118,7 @@ async function runCommand(message)
                         ioLock = true;
                         
                         serverArray = [];
-                        serverArray = commandToRun.execute(serverArray, fs);
+                        serverArray = await commandToRun.execute(fs);
 
                         ioLock = false;
                         break;
@@ -126,7 +136,7 @@ async function runCommand(message)
             switch(commandString)
             {
                 case "help":
-                    commandToRun.execute(message, client);
+                    commandToRun.execute(message, args, client);
                     break;
             }
         }
@@ -139,3 +149,37 @@ async function runCommand(message)
     
 }
 
+function resetCashe()
+{
+    cashe = [];
+    
+    for(server in serverArray)
+    {
+        let serverCashe = {};
+        serverCashe.id = server.id;
+    }
+}
+
+function grabServerJSON(serverObj)
+{
+    for(server in serverArray)
+    {
+        if(server.id === serverObj.id.toString())
+        {
+            return server;
+        }
+    }
+    return null;
+}
+
+function grabServerCashe(serverObj)
+{
+    for(server in cashe)
+    {
+        if(server.id === serverObj.id.toString())
+        {
+            return server;
+        }
+    }
+    return null;
+}
