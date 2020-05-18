@@ -138,6 +138,9 @@ async function runCommand(message)
                 case "help":
                     commandToRun.execute(message, args, client);
                     break;
+                case "word":
+                    commandToRun.execute(message, args, client, grabServerJSON(message.guild));
+                    break;
             }
         }
     }
@@ -162,7 +165,7 @@ function resetCashe()
 
 function grabServerJSON(serverObj)
 {
-    for(server in serverArray)
+    for(server of serverArray)
     {
         if(server.id === serverObj.id.toString())
         {
@@ -174,7 +177,7 @@ function grabServerJSON(serverObj)
 
 function grabServerCashe(serverObj)
 {
-    for(server in cashe)
+    for(server of cashe)
     {
         if(server.id === serverObj.id.toString())
         {
