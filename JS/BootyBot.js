@@ -141,6 +141,9 @@ async function runCommand(message)
                 case "word":
                     commandToRun.execute(message, args, client, grabServerJSON(message.guild));
                     break;
+                case "strs":
+                    commandToRun.execute(message, args, client, grabServerJSON(message.guild));
+                    break;
             }
         }
     }
