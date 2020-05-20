@@ -34,7 +34,7 @@ module.exports = {
                     userList.push(grabbedUser);
                 }
 
-                let splitString = chanMessage.text.split(/ +/);
+                let splitString = chanMessage.text.split(/ +|\n/);
                 for(word of splitString)
                 {
                     let processedWord = word.match(/\w+/);
@@ -49,6 +49,10 @@ module.exports = {
 
         let toReturn = "How many times have people said " + qWord + "?\n";
 
+        userList.sort(function(a, b){
+            return b.count - a.count;
+        });
+
         for(user of userList)
         {
             if(user.count > 0)
@@ -56,6 +60,12 @@ module.exports = {
                 let userOBJ = await client.users.fetch(user.id);
                 toReturn += userOBJ.username + ": " + user.count.toString() + "\n";
             }
+        }
+
+        if(toReturn.length > 2000)
+        {
+            message.channel.send("Too damn long, search less!");
+            return;
         }
         message.channel.send(toReturn);
     },
