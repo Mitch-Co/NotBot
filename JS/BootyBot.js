@@ -157,6 +157,9 @@ async function runCommand(message)
                 case "strs":
                     commandToRun.execute(message, args, client, grabServerJSON(message.guild));
                     break;
+                case "stru":
+                    commandToRun.execute(message, args, client, grabServerJSON(message.guild));
+                    break;
             }
         }
     }
