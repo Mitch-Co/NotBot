@@ -70,6 +70,7 @@ async function runCommand(message)
     const commandString = args.shift().toLowerCase();
     let commandToRun = client.commands.get(commandString);
     
+    // If the command does not exist, stop
     if(commandToRun == null)
     {
         message.channel.send("This command is not valid, to list valid commands, use `" + botPrefix + "help`.");
@@ -79,13 +80,16 @@ async function runCommand(message)
 
     try
     {
+        // If the command is admin-only
         if(commandToRun.isAdmin)
         {
+            // And the user has admin access
             if(isAdmin(message.author))
             {
-                // Admin Commands
+                // Execute command as admin
                 switch(commandString)
                 {
+                    // Scan current server and convert it to JSON object, add it to server list
                     case "scanserv":
                         if(ioLock === true)
                         {
@@ -97,6 +101,8 @@ async function runCommand(message)
                         serverArray.push(serverJSON);
                         ioLock = false;
                         break;
+                    
+                    // Save server JSONs to file
                     case "saveserv":
                         if(ioLock === true)
                         {
@@ -109,6 +115,8 @@ async function runCommand(message)
 
                         ioLock = false;
                         break;
+
+                    // Load server JSONs from file
                     case "loadserv":
                         if(ioLock === true)
                         {
@@ -130,23 +138,29 @@ async function runCommand(message)
                 message.channel.send("This is a " + botMaster + " only command!");
             }
         }
+        // Execute non-admin commands
         else
         {
-            // Non Admin Commands
             switch(commandString)
             {
+                // Help command
                 case "help":
                     commandToRun.execute(message, args, client);
                     break;
+
+                // Search for a word in server messages
                 case "word":
                     commandToRun.execute(message, args, client, grabServerJSON(message.guild));
                     break;
+                
+                // Serch for a substring in server messages
                 case "strs":
                     commandToRun.execute(message, args, client, grabServerJSON(message.guild));
                     break;
             }
         }
     }
+    // Catches any other uncaught error in commands
     catch (err)
     {
         message.channel.send("An error has occured while trying to run the command!");
@@ -155,6 +169,7 @@ async function runCommand(message)
     
 }
 
+// Deletes cashe and reinitializes it
 function resetCashe()
 {
     cashe = [];
@@ -166,6 +181,7 @@ function resetCashe()
     }
 }
 
+// Grabs server from global JSON given a discordJS server object
 function grabServerJSON(serverObj)
 {
     for(server of serverArray)
@@ -177,7 +193,7 @@ function grabServerJSON(serverObj)
     }
     return null;
 }
-
+// Grabs server from global JSON cashe given a discordJS server object
 function grabServerCashe(serverObj)
 {
     for(server of cashe)
