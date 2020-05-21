@@ -12,7 +12,6 @@ module.exports = {
             return;
         }
         let userList = [];
-        let qStr;
 
         if(args.length === 0)
         {
@@ -20,7 +19,7 @@ module.exports = {
             return;
         }
 
-        qStr = message.content.substr(message.content.indexOf(' ')+1);
+        const qStr = message.content.substr(message.content.indexOf(' ')+1);
 
         if(qStr == "")
         {
@@ -45,9 +44,11 @@ module.exports = {
 
                 for(let i = 0;i <= mSize - qSize; i++)
                 {
-                    if(chanMessage.text.substr(i,mSize - 1) == qStr)
+                    if(chanMessage.text.substring(i, qSize + i) === qStr)
                     {
+                        //console.log("found " + qStr + " in {" + chanMessage.text + "}" + "\nsubstr = {" + chanMessage.text.substring(i, qSize + i) + "}\n" );
                         count += 1;
+                        i = i + qSize;
                     }
                 }
 
