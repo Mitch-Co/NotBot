@@ -67,7 +67,7 @@ module.exports = {
             }
         }
 
-        let toReturn = "How many times have people said " + qStr + "?\n";
+        let toReturn = "How many times have people said \"" + qStr + "\"?\n";
 
         userList.sort(function(a, b){
             return b.count - a.count;
@@ -84,7 +84,7 @@ module.exports = {
 
         if(toReturn.length > 2000)
         {
-            message.channel.send("Too damn long, search less!");
+            message.channel.send("Return message too long, search less!");
             return;
         }
         message.channel.send(toReturn);
