@@ -3,7 +3,7 @@ module.exports = {
     description: 'Scans all messages in a server',
     args: "No arguments",
     isAdmin: true,
-    hidden: false,
+    hidden: true,
 	async execute(commandMSG, guild) {
 
         let serverJSON = {};

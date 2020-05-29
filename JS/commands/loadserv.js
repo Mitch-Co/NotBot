@@ -3,7 +3,7 @@ module.exports = {
     description: 'Loads all messages from server files',
     args: "No arguments",
     isAdmin: true,
-    hidden: false,
+    hidden: true,
 	execute(fs) {
         let filePath = "../assets/servers/";
         let toReturnJSON = [];

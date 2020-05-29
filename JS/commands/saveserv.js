@@ -3,7 +3,7 @@ module.exports = {
     description: "Saves all messages in a server",
     args: "No arguments",
     isAdmin: true,
-    hidden: false,
+    hidden: true,
 	execute(message, serverListJSON, fs) {
         let filePath = "../assets/servers/";
         for(const serverJSON of serverListJSON)

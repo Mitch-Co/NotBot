@@ -160,6 +160,11 @@ async function runCommand(message)
                 case "stru":
                     commandToRun.execute(message, args, client, grabServerJSON(message.guild));
                     break;
+
+                // Finds a users most popular words
+                case "popword":
+                        commandToRun.execute(message, grabServerJSON(message.guild));
+                        break;
             }
         }
     }
