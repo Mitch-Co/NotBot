@@ -6,6 +6,9 @@ module.exports = {
     hidden: false,
 	async execute(message, args, client, serverJSON) {
 
+        // NOTE: This function operates the same as strs, it just compares strings case insensitively
+        // As such, the code is uncommented
+        
         if(serverJSON == null)
         {
             message.channel.send("SERVER FILE NOT RECEIVED!");
@@ -46,7 +49,6 @@ module.exports = {
                 {
                     if(chanMessage.text.substring(i, qSize + i).toLowerCase() === qStr)
                     {
-                        //console.log("found " + qStr + " in {" + chanMessage.text + "}" + "\nsubstr = {" + chanMessage.text.substring(i, qSize + i) + "}\n" );
                         count += 1;
                         i = i + qSize;
                     }
@@ -54,16 +56,6 @@ module.exports = {
 
                 grabbedUser.count += count;
                 
-                // let splitString = chanMessage.text.split(/ +|\n/);
-                // for(word of splitString)
-                // {
-                //     let processedWord = word.match(/\w+/);
-                    
-                //     if(processedWord != null && processedWord[0].toLowerCase() === qWord)
-                //     {
-                //         grabbedUser.count += 1;
-                //     }
-                // }
             }
         }
 

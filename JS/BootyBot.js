@@ -28,11 +28,13 @@ client.login(token);
 client.on("ready", async () => {
     console.log(`Logged in as ${client.user.tag}!`);
     
+    // Lock IO and load server
     ioLock = true;   
     serverArray = [];
     serverArray = await client.commands.get("loadserv").execute(fs);
     
     // Initialize cashe array for quick response times after first load
+    // NOTE: As of current version, Cashe is not used by any command
     resetCashe();
     ioLock = false;
 
@@ -130,6 +132,11 @@ async function runCommand(message)
 
                         ioLock = false;
                         break;
+                    
+                    // Finds a users most popular words
+                    case "popword":
+                        commandToRun.execute(message, grabServerJSON(message.guild));
+                        break;
                 }
 
             }
@@ -160,11 +167,6 @@ async function runCommand(message)
                 case "stru":
                     commandToRun.execute(message, args, client, grabServerJSON(message.guild));
                     break;
-
-                // Finds a users most popular words
-                case "popword":
-                        commandToRun.execute(message, grabServerJSON(message.guild));
-                        break;
             }
         }
     }

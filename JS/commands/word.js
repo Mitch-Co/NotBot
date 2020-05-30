@@ -11,6 +11,7 @@ module.exports = {
             message.channel.send("SERVER FILE NOT RECEIVED!");
             return;
         }
+
         let userList = [];
         let qWord;
 
@@ -23,20 +24,29 @@ module.exports = {
             message.channel.send("Invalid arguments.");
             return;
         }
+
+        // For all messages in a server
         for(channel of serverJSON.channels)
         {
             for(chanMessage of channel.messages)
             {
+                // Find who said the message in the userList
                 let grabbedUser = grabUser(chanMessage.author, userList);
+
+                // If they do not exist, make them and put them in the userList
                 if(grabbedUser === null)
                 {
                     grabbedUser = makeNewUser(chanMessage.author);
                     userList.push(grabbedUser);
                 }
 
+                // Break the message up by separating by either spaces or newlines
                 let splitString = chanMessage.text.split(/ +|\n/);
+
+                // For each word of the message
                 for(word of splitString)
                 {
+                    // Remove anything at the start or end of the word (punctuation, etc)
                     let processedWord = word.match(/\w+/);
                     
                     if(processedWord != null && processedWord[0].toLowerCase() === qWord)
@@ -49,10 +59,12 @@ module.exports = {
 
         let toReturn = "How many times have people said " + qWord + "?\n";
 
+        // Sort the userList based on its count variables, from highest to lowest
         userList.sort(function(a, b){
             return b.count - a.count;
         });
 
+        // Add each user who has said qWord to the return text
         for(user of userList)
         {
             if(user.count > 0)
@@ -62,6 +74,7 @@ module.exports = {
             }
         }
 
+        // Incase the return text is too long to be displayed in discord
         if(toReturn.length > 2000)
         {
             message.channel.send("Too damn long, search less!");
@@ -71,6 +84,7 @@ module.exports = {
     },
 };
 
+// Generates and returns a new user object
 function makeNewUser(id) {
     let user = {};
     user.id = id;
@@ -78,6 +92,7 @@ function makeNewUser(id) {
     return user;
 }
 
+// Linear searches the userList for a user
 function grabUser(id, userList) {
 
     for(user of userList)
