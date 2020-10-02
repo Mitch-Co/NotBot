@@ -17,6 +17,5 @@ GETTING STARTED
 --------------------------------------------------------------------------------------
 To run BootyBot - Install Node JS, install the discord js node module in the JS folder.
 Replace the exampleconfig.json in the assets folder with your custom config.json file.
-
-Now, to start BootyBot, all that is required is to run BootyBot.js with Node.
+After this BootyBot should be able to be run in Node.
 
