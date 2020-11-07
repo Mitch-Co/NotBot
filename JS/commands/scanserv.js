@@ -166,7 +166,7 @@ async function grabMessagesFromChan(channel)
 
         if((i*100) % 10000 === 0)
         {
-            console.log("   Scanned " + (i/100) + "K messages in " + channel.toString())
+            console.log("   Scanned " + (i/10) + "K messages in " + channel.toString())
         }
 
         // Break when breakflag true
