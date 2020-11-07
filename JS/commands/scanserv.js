@@ -103,7 +103,7 @@ async function grabMessagesFromChan(channel)
     let manager = channel.messages;
 
     // The max amount of messages to grab
-    let absLimit = 100000;
+    let absLimit = 1000000;
 
     // An array of discordJS message objects to return
     let toReturn = [];
@@ -117,37 +117,27 @@ async function grabMessagesFromChan(channel)
     for (let i = 0; i < rounds; i++) {
         
         let breakflag = false;
-        let options;
+        
+        let options = {
+            limit:100
+        };
 
-        // I made this if statement before I knew much about JSON objects, so it could be done by just adding elements to something like "let options = {};"
-        // However, this just works, and I would rather not touch anything in this function
-        // TODO: MAKE THIS "IF" LESS DISGUSTING
         if(lastID.length > 0) {
-            options = {
-                limit:100,
-                before:lastID,
-            }
-        }
-        else
-        {
-            options = {
-                limit:100,
-            }
+            options.before = lastID;
         }
 
         // Fetch 100 messages
         await manager.fetch(options)
-        .then(messages => {
+        .then(messages => {    
 
-            // I think it might be good to do away with this msgArray as well, but once again, I would rather not touch this function
             let msgArray = messages.array();
-
 
             if(msgArray.length < 100 || msgArray == null)
             {
-                // Break collection loop if there are no more messages in the channel
-                // Uh, this might cut off up to the first 99 messages said in a chatroom, its fine though
-                // TODO: ADD THE REMAINING MESSAGE OBJECTS TO THE RETURN ARRAY
+                // Push remaining messages
+                messages.forEach((message)=> {                    
+                    toReturn.push(message);
+                });
                 breakflag = true;
             }
             else
@@ -156,11 +146,10 @@ async function grabMessagesFromChan(channel)
                 messages.forEach((message)=> {                    
                     toReturn.push(message);
                 });
-
-                // TODO: WHY IS THIS NOT STRICT COMPARISON? 
+                
+                // Break collection loop if the last collection ID was the same as the current collection
                 if(lastID == msgArray[msgArray.length - 1].id.toString())
                 {
-                    // Break collection loop if the last collection was the same as the current collection
                     breakflag = true;
                 }
                 
@@ -175,8 +164,12 @@ async function grabMessagesFromChan(channel)
             console.log(err);
         });
 
+        if((i*100) % 10000 === 0)
+        {
+            console.log("   Scanned " + (i/100) + "K messages in " + channel.toString())
+        }
+
         // Break when breakflag true
-        // TODO: WHY DO WE COMPARE TO TRUE HERE INSTEAD OF JUST USING if (breakflag) ?
         if(breakflag === true)
         {
             break;
