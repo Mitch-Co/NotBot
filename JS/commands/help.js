@@ -37,7 +37,7 @@ module.exports = {
         {
             // Return a list of all non hidden commands
 
-            response = "BootyBot 5000 Command List:\n";
+            response = "NotBot Command List:\n";
             for (command of commandmap)
             {
                 if(!command.hidden)

@@ -7,9 +7,9 @@ All server message logs will be saved into .json files upon scanning and saving.
 
 HOW DOES IT WORK?
 --------------------------------------------------------------------------------------
-NOTE: BOOTYBOT DOES NOT AUTOMATICALLY SAVE SERVERS AFTER SCANNING
-NOTEx2: BOOTYBOT DOES LOAD SERVERS AUTOMATICALLY 
-After BootyBot scans a server, you can use the copy of the server in memory until bootybot is restarted.
+NOTE: NOTBOT DOES NOT AUTOMATICALLY SAVE SERVERS AFTER SCANNING
+NOTEx2: NOTBOT DOES LOAD SERVERS AUTOMATICALLY 
+After NotBot scans a server, you can use the copy of the server in memory until notbot is restarted.
 If you decide to save the servers, this is the area where they will be stored.
 
 Servers are stored as JSON objects.

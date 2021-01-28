@@ -1,16 +1,16 @@
 WHAT IS THIS AREA FOR?
 --------------------------------------------------------------------------------------
-This area is storage for any non-code part of BootyBot.
+This area is storage for any non-code part of NotBot.
 
-Currently the essential non-code parts of BootyBot are:
+Currently the essential non-code parts of NotBot are:
 	config.json
 	servers (folder)
 
 
-WHAT DO I NEED TO DO TO GET BOOTYBOT OPERATIONAL?
+WHAT DO I NEED TO DO TO GET NOTBOT OPERATIONAL?
 --------------------------------------------------------------------------------------
 
-You need to make a valid config.json file for BootyBot to use.
+You need to make a valid config.json file for NotBot to use.
 
 An exampleconfig.json is provided, to use the example:
 

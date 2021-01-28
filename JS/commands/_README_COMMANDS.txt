@@ -1,6 +1,6 @@
 WHAT IS THIS AREA FOR?
 --------------------------------------------------------------------------------------
-This area stores modules for each of BootyBot's commands.
+This area stores modules for each of NotBot's commands.
 
 The commands all take in a set of inputs, process the inputs, and return data or a send a message.
 
