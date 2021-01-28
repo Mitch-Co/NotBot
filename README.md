@@ -20,6 +20,6 @@ Some starter commands are as follows:
 After scanning and saving a server, commands can be found by using the `help` command.
 Some interesting commands include:
 
-`reactionr <discord emoji>` - Shows how many times people have received a reaction
-`reaction <discord emoji>` - Shows how many times people have given a reaction
-`stru <sentence>` - Finds the number of times people on the server have said the sentence
+`reactionr <discord emoji>` - Shows how many times people have received a reaction<br/>
+`reaction <discord emoji>` - Shows how many times people have given a reaction<br/>
+`stru <sentence>` - Finds the number of times people on the server have said the sentence<br/>

@@ -6,7 +6,7 @@ NotBot is a discord bot written in discord.js.
 It can analyze server messages and provide statistics on various server metrics.
 
 All code is stored within the JS folder, with main logic code being stored in BootyBot.js.
-All BootyBot commands are stored as modules in the commands folder.
+All NotBot commands are stored as modules in the commands folder.
 Saved servers are stored in the assets folders.
 
 Each important folder location has its own readme.txt.
