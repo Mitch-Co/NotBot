@@ -7,7 +7,7 @@ NotBot is a discord bot written in [discord.js](https://discord.js.org). It can 
 A major rewrite of NotBot had to be done after discovering that JSON object saving and reading works just slightly differently than expected. Some code could have allowed for a hacky fix, but a rewrite seemed more appropriate. 
 
 ## Getting Started
-To run NotBot - Install Node JS, install the discord js node module in the `JS` folder.
+To run NotBot - Install Node JS, install the discord js node module (and other dependencies) in the `JS` folder using NPM.
 After installation, replace the `exampleconfig.json` in the `assets` folder with your custom config.json file.
 
 ## Functionality
